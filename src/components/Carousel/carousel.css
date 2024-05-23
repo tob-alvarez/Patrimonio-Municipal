@@ -1,0 +1,17 @@
+.imagenCar {
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+    position: relative;
+}
+.contenedorImagenCar{
+    height: 100%;
+}
+@media (width >= 1000px) {
+    .contenedorImagenCar{
+        height: 500px;
+    }
+    .imagenCar{
+        transform: translateY(-200px);
+    }
+}
