@@ -1,0 +1,8 @@
+.cards{
+    object-fit: 'contain';
+    height: 300px;
+    transition: .5s;
+}
+.cards:hover{
+    scale: 1.1;
+}
