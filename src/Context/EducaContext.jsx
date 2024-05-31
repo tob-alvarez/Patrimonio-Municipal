@@ -10,14 +10,15 @@ const ProviderEducacion = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(null);
   const [selected, setSelected] = useState([]);
-  const [estatuas, setEstatuas] = useState([]);
+  const [tipologias, setTipologias] = useState([]);
+  const [patrimonio, listarPatrimonio] = useState([]);
   
 
-    const obtenerEstatuas = async () => {
+    const obtenerTipologias = async () => {
       try {
-        const resultado = await axios.get("/estatuas/listarEstatuas");
+        const resultado = await axios.get("/patrimonio/listarTipologiasPatrimonio");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
-      setEstatuas(resultado.data.estatuas);
+      setTipologias(resultado.data.tipologias);
       } catch (error) {
         console.log(error);
       }
@@ -68,8 +69,10 @@ const ProviderEducacion = ({ children }) => {
         setSelected,
         actualizador,
         refresh,
-        estatuas,
-        obtenerEstatuas
+        tipologias,
+        obtenerTipologias,
+        patrimonio,
+        listarPatrimonio
       }}
     >
       {children}
