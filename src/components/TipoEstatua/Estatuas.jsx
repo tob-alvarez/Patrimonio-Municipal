@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
+import { Card, CardContent, Typography, CardActionArea } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../config/axios';
 
 function ActionAreaCard({ patrimonio }) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    console.log(`Navigating to /patrimonio/${patrimonio.id}`);
+    navigate(`/patrimonio/${patrimonio.id}`);
+  };
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="240"
-          image={`https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${patrimonio.nombre_archivo}`}
+    <Card sx={{ maxWidth: 350 }}>
+      <CardActionArea onClick={handleCardClick}>
+        <img className='img-fluid'
+          src={`https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${patrimonio.nombre_archivo}`}
+          style={{ minWidth: "350px", maxWidth: "350px", minHeight: "200px", maxHeight: "200px", objectFit: "cover" }}
           alt={patrimonio.nombre_patrimonio}
         />
         <CardContent>
@@ -28,17 +35,19 @@ function ActionAreaCard({ patrimonio }) {
 function Estatuas() {
   const [patrimonios, setPatrimonios] = React.useState([]);
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/patrimonio/listarPatrimonios');
-        console.log(':D', response.data);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/patrimonio/listarPatrimonios');
+      console.log(':D', response.data);
 
-        setPatrimonios(response.data.patrimonios);
-      } catch (error) {
-        console.error('Algo salió mal :(', error);
-      }
-    };
+      setPatrimonios(response.data.patrimonios);
+    } catch (error) {
+      console.error('Algo salió mal :(', error);
+    }
+  };
+  
+  React.useEffect(() => {
+    
 
     fetchData();
   }, []);

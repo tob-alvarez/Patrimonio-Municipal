@@ -1,15 +1,20 @@
-import * as React from 'react';
-import { Card, CardMedia, CardContent, Typography, CardActionArea } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, Typography, CardActionArea } from '@mui/material';
 import axios from '../../config/axios';
+import { useNavigate } from 'react-router-dom';
 
-function ActionAreaCard({ patrimonio }) {
+// Componente de la tarjeta de acción
+function ActionAreaCard({ patrimonio, onCardClick }) {
+  const handleCardClick = () => {
+    onCardClick(patrimonio.id_patrimonio); 
+  };
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="240"
-          image={`https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${patrimonio.nombre_archivo}`}
+    <Card sx={{ maxWidth: 350 }}>
+      <CardActionArea onClick={handleCardClick}>
+        <img className='img-fluid'
+          src={`https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${patrimonio.nombre_archivo}`}
+          style={{ minWidth: "350px", maxWidth: "350px", minHeight: "200px", maxHeight: "200px", objectFit: "cover" }}
           alt={patrimonio.nombre_patrimonio}
         />
         <CardContent>
@@ -25,36 +30,39 @@ function ActionAreaCard({ patrimonio }) {
   );
 }
 
+// Componente principal de Esculturas
 function Esculturas() {
-  const [patrimonios, setPatrimonios] = React.useState([]);
+  const [patrimonios, setPatrimonios] = useState([]);
+  const navigate = useNavigate(); // Obtiene la función navigate
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/patrimonio/listarPatrimonios');
-        console.log(':D', response.data);
+        console.log('Respuesta de la solicitud:', response.data);
 
         setPatrimonios(response.data.patrimonios);
       } catch (error) {
-        console.error('Algo salió mal :(', error);
+        console.error('Error al obtener patrimonios:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  
-  const filteredPatrimonios = patrimonios.filter(patrimonio => {
-    console.log('Checking patrimonio:', patrimonio); 
-    return patrimonio.id_tipologia === 1;
-  });
+  // Filtra los patrimonios basados en id_tipologia
+  const filteredPatrimonios = patrimonios.filter(patrimonio => patrimonio.id_tipologia === 1);
 
-  console.log('Filtered Patrimonios:', filteredPatrimonios);
+  // Función para manejar la navegación cuando se hace clic en una tarjeta
+  const handleCardClick = (id) => {
+    console.log(`Navegando a /patrimonio/${id}`);
+    navigate(`/patrimonio/${id}`);
+  };
 
   return (
     <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '50px', flexWrap: 'wrap' }}>
       {filteredPatrimonios.map(patrimonio => (
-        <ActionAreaCard key={patrimonio.id_patrimonio} patrimonio={patrimonio} />
+        <ActionAreaCard key={patrimonio.id_patrimonio} patrimonio={patrimonio} onCardClick={handleCardClick} />
       ))}
     </div>
   );

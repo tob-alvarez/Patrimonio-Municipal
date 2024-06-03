@@ -8,6 +8,7 @@ import Busto from './components/TipoEstatua/Bustos';
 import Sobrerelieve from './components/TipoEstatua/Sobrerelieves';
 import Bajorelieve from './components/TipoEstatua/Bajorelieves';
 import Pintura from './components/TipoEstatua/Pinturas';
+import PatrimonioDetail from './components/PatrimonioDetail/PatrimonioDetails'; 
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/Sobrerelieves" element={<Sobrerelieve />} />
               <Route path="/Bajorelieves" element={<Bajorelieve />} />
               <Route path="/Pinturas" element={<Pintura />} />
+              <Route path="/patrimonio/listarPatrimonioPorId/:id" element={<PatrimonioDetail />} />
             </Routes>
           </Layout>
         </ProviderEducacion>
@@ -33,3 +35,4 @@ function App() {
 }
 
 export default App;
+
