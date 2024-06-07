@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import axios from '../config/axios';
+import axios from "../config/axios";
 
 export const EducaContext = createContext();
 
@@ -12,18 +12,19 @@ const ProviderEducacion = ({ children }) => {
   const [selected, setSelected] = useState([]);
   const [tipologias, setTipologias] = useState([]);
   const [patrimonio, listarPatrimonio] = useState([]);
-  
 
-    const obtenerTipologias = async () => {
-      try {
-        const resultado = await axios.get("/patrimonio/listarTipologiasPatrimonio");
+  const obtenerTipologias = async () => {
+    try {
+      const resultado = await axios.get(
+        "/patrimonio/listarTipologiasPatrimonio"
+      );
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setTipologias(resultado.data.tipologias);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getAuth = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -48,12 +49,12 @@ const ProviderEducacion = ({ children }) => {
     localStorage.removeItem("tokenSet");
     const url = new URL(`http://localhost:5174/`);
     url.searchParams.append("logout", true);
-    window.open(url.toString(), '_self');
+    window.open(url.toString(), "_self");
   };
 
-  const actualizador = () =>{
-    setRefresh(!refresh)
-  }
+  const actualizador = () => {
+    setRefresh(!refresh);
+  };
 
   return (
     <EducaContext.Provider
@@ -72,7 +73,7 @@ const ProviderEducacion = ({ children }) => {
         tipologias,
         obtenerTipologias,
         patrimonio,
-        listarPatrimonio
+        listarPatrimonio,
       }}
     >
       {children}

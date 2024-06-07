@@ -1,0 +1,33 @@
+.patrimonio-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.patrimonio-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.patrimonio-año,
+.patrimonio-descripcion,
+.patrimonio-autor,
+.patrimonio-ubicacion,
+.patrimonio-origen {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.image-gallery {
+  width: 50vw;
+  margin: 20px auto;
+}
+
+.image-gallery img {
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .image-gallery {
+    width: 90vw;
+  }
+}
