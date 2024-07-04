@@ -1,27 +1,39 @@
-import Card from '../Estatuas/Card'
-import Carrousel from "../Carousel/Carrousel"
+import NavBar from '../../common/NavBar';
+import Card from '../Estatuas/Card';
+import Carrousel from "../Carousel/Carrousel";
+import logoMuniHome from "../../assets/Logo_SMT_pos_1.png";
+import './Home.css'; // Asegúrate de que este archivo existe en la misma carpeta que Home.jsx
 
 const Home = () => {
+  const customStyles = {
+    backgroundColor: 'white'  
+  };
+
   return (
     <>
-        <div className='mb-5'>
-            <Carrousel/>
-            <div className="container my-5 text-center">
-              <h1>Patrimonio Municipal</h1>
-            </div>
-            <div className="d-flex flex-wrap gap-5 justify-content-center">
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
-            </div>
+      <NavBar customStyles={customStyles} logoSrc={logoMuniHome} color={true} /> 
+      <div className='mb-5'>
+        <Carrousel/>
+        <div className="container my-5 text-center">
+          <h1>Patrimonio Municipal</h1>
+          <div className="patrimonio-svg-home">
+            <svg
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              width="100%"
+              height="30"
+              fill="RoyalBLue"
+            >
+              <rect className="svg" width="100%" height="50" fill="RoyalBlue" />
+            </svg>
+          </div>
         </div>
+        <div className="d-flex flex-wrap gap-5 justify-content-center">
+          <Card/>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

@@ -1,8 +1,25 @@
 .cards{
-    object-fit: 'contain';
+    object-fit: cover;
     height: 300px;
+    width: 300px;
     transition: .5s;
 }
 .cards:hover{
     scale: 1.1;
 }
+
+.cards-container {
+    transition: transform 0.3s ease;
+    object-fit: cover;
+    height: 300px;
+    width: 300px;
+    transition: .5s;
+  }
+  
+  .cards-container:hover {
+    transform: scale(1.05);
+  }
+
+  .cards-container {
+    cursor: pointer;
+  }

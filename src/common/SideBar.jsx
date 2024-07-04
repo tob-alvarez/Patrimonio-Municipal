@@ -78,6 +78,9 @@ export default function ListaPrueba() {
             case 6:
               nuevoNombre = "Pinturas";
               break;
+            case 7:
+              nuevoNombre = "Museos";
+              break;
             default:
               nuevoNombre = item.nombre_tipologia;
           }

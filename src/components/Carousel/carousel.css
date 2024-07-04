@@ -1,17 +1,32 @@
 .imagenCar {
-    height: auto;
-    object-fit: cover;
-    width: 100%;
-    position: relative;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+  position: relative;
 }
-.contenedorImagenCar{
-    height: 100%;
+
+.text-image h3,
+p {
+  color: #000000;
+}
+
+.text-image {
+  
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  left: 30% !important;
+  right:  30% !important;
+}
+.contenedorImagenCar {
+  height: 100%;
 }
 @media (width >= 1000px) {
-    .contenedorImagenCar{
-        height: 500px;
-    }
-    .imagenCar{
-        transform: translateY(-200px);
-    }
+  .contenedorImagenCar {
+    height: 500px;
+  }
+  .imagenCar {
+    transform: translateY(-200px);
+  }
 }

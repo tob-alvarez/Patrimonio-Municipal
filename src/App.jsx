@@ -8,7 +8,9 @@ import Busto from './components/TipoEstatua/Bustos';
 import Sobrerelieve from './components/TipoEstatua/Sobrerelieves';
 import Bajorelieve from './components/TipoEstatua/Bajorelieves';
 import Pintura from './components/TipoEstatua/Pinturas';
-import PatrimonioDetail from './components/PatrimonioDetail/PatrimonioDetails'; 
+import PatrimonioDetail from './components/PatrimonioDetail/PatrimonioDetails';
+import MediaCards from './components/Estatuas/Card';
+import Museo from "./components/TipoEstatua/Museos";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
               <Route path="/Bajorelieves" element={<Bajorelieve />} />
               <Route path="/Pinturas" element={<Pintura />} />
               <Route path="/patrimonio/:id" element={<PatrimonioDetail />} />
+              <Route path="/patrimonios" element={<MediaCards />} />
+              <Route path="/Museos" element={<Museo />} />
             </Routes>
           </Layout>
         </ProviderEducacion>
@@ -35,4 +39,6 @@ function App() {
 }
 
 export default App;
+
+
 

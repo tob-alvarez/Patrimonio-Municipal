@@ -4,7 +4,7 @@ import ActionAreaCard from "../ActionAreaCard/ActionAreaCard";
 import NavBar from "../../common/NavBar";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png"
 
-function Bajorelieves() {
+function Museos() {
   const [patrimonios, setPatrimonios] = useState([]);
   
     const customStyles = {
@@ -25,7 +25,7 @@ function Bajorelieves() {
   }, []);
 
   const filteredPatrimonios = patrimonios.filter(
-    (patrimonio) => patrimonio.id_tipologia === 5
+    (patrimonio) => patrimonio.id_tipologia === 7
   );
 
   return (
@@ -48,4 +48,4 @@ function Bajorelieves() {
   );
 }
 
-export default Bajorelieves;
+export default Museos;

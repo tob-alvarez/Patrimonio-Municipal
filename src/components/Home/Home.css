@@ -1,0 +1,14 @@
+.patrimonio-svg-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-left: 20px; */
+    width: auto;
+  }
+  
+  .patrimonio-svg-home svg {
+    width: 20% !important;
+    height: 1.1vh;
+    display: flex;
+    
+  }

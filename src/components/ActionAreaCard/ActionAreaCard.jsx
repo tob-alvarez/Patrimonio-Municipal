@@ -22,9 +22,9 @@ function ActionAreaCard({ patrimonio }) {
                     <Typography gutterBottom variant="h5" component="div">
                         {patrimonio.nombre_patrimonio}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    {/* <Typography variant="body2" color="text.secondary">
                         {patrimonio.descripcion}
-                    </Typography>
+                    </Typography> */}
                 </CardContent>
             </CardActionArea>
         </Card>
