@@ -3,6 +3,8 @@
     height: 300px;
     width: 300px;
     transition: .5s;
+    position: relative; 
+    z-index: 1; 
 }
 .cards:hover{
     scale: 1.1;

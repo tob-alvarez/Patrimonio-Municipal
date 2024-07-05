@@ -11,6 +11,7 @@ import Pintura from './components/TipoEstatua/Pinturas';
 import PatrimonioDetail from './components/PatrimonioDetail/PatrimonioDetails';
 import MediaCards from './components/Estatuas/Card';
 import Museo from "./components/TipoEstatua/Museos";
+import Footer from "./common/Footer"
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/patrimonio/:id" element={<PatrimonioDetail />} />
               <Route path="/patrimonios" element={<MediaCards />} />
               <Route path="/Museos" element={<Museo />} />
+              <Route path="/Footer" element={<Footer />} />
             </Routes>
           </Layout>
         </ProviderEducacion>
