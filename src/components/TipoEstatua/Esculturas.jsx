@@ -3,6 +3,7 @@ import axios from "../../config/axios";
 import ActionAreaCard from "../ActionAreaCard/ActionAreaCard";
 import NavBar from "../../common/NavBar";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png"
+import "./TipoEstatua.css"
 
 function Esculturas() {
   const [patrimonios, setPatrimonios] = useState([]);
@@ -31,15 +32,7 @@ function Esculturas() {
   return (
     <>
     <NavBar customStyles={customStyles} logoSrc={logoMuniHome}/>
-    <div
-      style={{
-        display: "flex",
-        gap: "20px",
-        justifyContent: "center",
-        marginTop: "325px",
-        flexWrap: "wrap",
-      }}
-    >
+    <div className="stylexd" >
       {filteredPatrimonios.map((patrimonio, index) => (
         <ActionAreaCard key={index} patrimonio={patrimonio} />
       ))}

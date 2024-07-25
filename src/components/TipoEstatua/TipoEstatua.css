@@ -1,0 +1,8 @@
+.stylexd {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 325px;
+  flex-wrap: wrap;
+  margin-bottom: 256px;
+}
