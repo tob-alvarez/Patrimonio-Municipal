@@ -15,7 +15,7 @@
   z-index: 9999;
 }
 
-.pingo {
+.footer2 {
   display: flex;
   justify-content: space-between;
   width: 100% !important;
@@ -93,7 +93,7 @@
     font-size: 15px;
   }
 
-  .pingo {
+  .footer2 {
     display: flex;
     right: 0 !important;
     justify-content: flex-end;

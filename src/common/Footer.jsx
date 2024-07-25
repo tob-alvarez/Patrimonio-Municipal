@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <footer className="footerCont pt-4 pb-4">
       <div className="container-fluid text-center text-md-left">
-        <div className="row pingo">
+        <div className="row footer2">
           <div className="d-flex col-md-4 mt-0 mb-2">
             <div className="logoFooter">
               <img src={logo} alt="logo municipalidad de Tucumán" />
