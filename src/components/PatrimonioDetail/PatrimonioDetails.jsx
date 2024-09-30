@@ -18,44 +18,38 @@ function PatrimonioDetail() {
   const [patrimonio, setPatrimonio] = useState(null);
   const [error, setError] = useState(null);
   const [imagenes, setImagenes] = useState([]);
-  
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAAZH-C5wlX8bcDecWgRAxpyaVLGWeGNOQ"
   });
 
   const traerPatrimonio = async (id) => {
     try {
-      const response = await axios.get(
-        `/patrimonio/listarPatrimoniosPorId/${id}`
-      );
+      const response = await axios.get(`/patrimonio/listarPatrimoniosPorId/${id}`);
       const data = response.data.patrimonio[0];
+  
       if (!data) {
         throw new Error("No se encontró el patrimonio");
       }
       setPatrimonio(data);
-      setImagenes([
-        {
-          original: `https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${data.nombre_archivo}`,
-          thumbnail: `https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${data.nombre_archivo}`,
-        },
-        {
-          original: data.imagen_carrousel_1,
-          thumbnail: data.imagen_carrousel_1,
-        },
-        {
-          original: data.imagen_carrousel_2,
-          thumbnail: data.imagen_carrousel_2,
-        },
-        {
-          original: data.imagen_carrousel_3,
-          thumbnail: data.imagen_carrousel_3,
-        },
-      ]);
+  console.log("hola")
+  console.log(data.nombre_archivo)
+      // Llamar al backend para obtener imágenes existentes
+      const imagenesExistentes = await axios.get(`http://localhost:3000/admin/obtenerImagenes?nombreArchivo=${data.nombre_archivo}`);
+      
+      const imagenesArray = imagenesExistentes.data.map(imagen => ({
+        original: `http://localhost:3000/admin/obtenerImagenes?image=${imagen}`,
+        thumbnail: `http://localhost:3000/admin/obtenerImagenes?image=${imagen}`,
+      }));
+  
+      setImagenes(imagenesArray);
+      
     } catch (error) {
       console.error("No se encontró el patrimonio", error);
       setError(error);
     }
   };
+  
 
   useEffect(() => {
     traerPatrimonio(id);
@@ -79,7 +73,7 @@ function PatrimonioDetail() {
         className="parallax"
         layers={[
           {
-            image: `https://atencionciudadana.smt.gob.ar/Fotos-Patrimonio/${patrimonio.nombre_archivo}`,
+            image: `http://localhost:3000/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`,
             amount: 0.3,
           },
         ]}
@@ -87,7 +81,6 @@ function PatrimonioDetail() {
           height: '1000px',
         }}
       >
-        
         <div className="patrimonio-background"></div>
       </ParallaxBanner>
       <div className="patrimonio-container">
@@ -113,21 +106,20 @@ function PatrimonioDetail() {
               showFullscreenButton={true}
               thumbnailPosition="top"
             />
-            
           </div>
           <div className="patrimonio-info">
             <p className="patrimonio-autor">🔵 Autor: {patrimonio.nombre_autor}</p>
             <p className="patrimonio-año">
-            🔵 Año de emplazamiento:{" "}
+              🔵 Año de emplazamiento:{" "}
               {typeof patrimonio.anio_emplazamiento === "string"
                 ? patrimonio.anio_emplazamiento.slice(0, 10)
                 : ""}
             </p>
             <p className="patrimonio-ubicacion">
-             🔵 Ubicación: {patrimonio.nombre_ubicacion}
+              🔵 Ubicación: {patrimonio.nombre_ubicacion}
             </p>
             <p className="patrimonio-origen">
-            🔵 Origen del Patrimonio: {patrimonio.origen}
+              🔵 Origen del Patrimonio: {patrimonio.origen}
             </p>
             <p className="patrimonio-descripcion">{patrimonio.descripcion}</p>
           </div>
