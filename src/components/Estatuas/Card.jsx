@@ -13,14 +13,25 @@ const MediaCards = () => {
 
   const fetchImages = async () => {
     const url = `http://localhost:3000/patrimonio/listarPatrimonios/`;
-    try {
+    try { 
+       const response = await axios.get(url);
+      const data = response.data.patrimonios;
       // const responseImagenes = await axios.get('http://localhost:3000/admin/obtenerImagenes');
       // const images = await responseImagenes.json();
       // console.log(responseImagenes);
-      const response = await axios.get(url);
-      const data = response.data.patrimonios;
-      setPatrimonios(data);
-      console.log(data);
+      const patrimoniosConImagen = await Promise.all(
+        data.map(async (patrimonio) => {
+          
+          const imagenesResponse = await axios.get(
+            `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${patrimonio.nombre_archivo?.split('.')[0]}`
+          );
+          const primeraImagen = imagenesResponse.data[0]?.imagen; // Obtener la primera imagen
+          return { ...patrimonio, primeraImagen };
+        })
+      );
+
+      setPatrimonios(patrimoniosConImagen);
+      // console.log(patrimoniosConImagen);
     } catch (error) {
       console.error("Error fetching the image URLs", error);
     }
@@ -48,9 +59,9 @@ const MediaCards = () => {
                 component="img"
                 alt={patrimonio.nombre_patrimonio}
                 height="140"
-                image={`http://localhost:3000/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
+                image={patrimonio.primeraImagen ? `data:image/jpeg;base64,${patrimonio.primeraImagen}` : ''}
               />
-              {console.log(patrimonio.nombre_archivo)}
+             
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {patrimonio.nombre_patrimonio}
