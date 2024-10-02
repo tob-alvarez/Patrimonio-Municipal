@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <>
       <NavBar customStyles={customStyles} logoSrc={logoMuniHome} color={true} /> 
-      <div className='mb-5'>
+      <div className='' style={{height: "84.5dvh"}}>
         <Carrousel/>
         <div className="container my-5 text-center">
           <h1>Patrimonio Municipal</h1>
@@ -28,7 +28,7 @@ const Home = () => {
             </svg>
           </div>
         </div>
-        <div className="d-flex flex-wrap gap-5 justify-content-center">
+        <div className="d-flex flex-wrap gap-5 justify-content-center pb-5">
           <Card/>
         </div>
       </div>

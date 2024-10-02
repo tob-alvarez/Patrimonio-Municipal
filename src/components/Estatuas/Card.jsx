@@ -13,29 +13,32 @@ const MediaCards = () => {
 
   const fetchImages = async () => {
     const url = `http://localhost:3000/patrimonio/listarPatrimonios/`;
-    try { 
-       const response = await axios.get(url);
+    try {
+      const response = await axios.get(url);
       const data = response.data.patrimonios;
-      // const responseImagenes = await axios.get('http://localhost:3000/admin/obtenerImagenes');
-      // const images = await responseImagenes.json();
-      // console.log(responseImagenes);
-      const patrimoniosConImagen = await Promise.all(
-        data.map(async (patrimonio) => {
-          
-          const imagenesResponse = await axios.get(
-            `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${patrimonio.nombre_archivo?.split('.')[0]}`
-          );
-          const primeraImagen = imagenesResponse.data[0]?.imagen; // Obtener la primera imagen
-          return { ...patrimonio, primeraImagen };
-        })
-      );
-
+      
+      const archivosBuscados = data.map(patrimonio => patrimonio.nombre_archivo?.split('.')[0]);
+  
+      // Hacer una única solicitud con todos los nombres de archivos
+      const imagenesResponse = await axios.get('http://localhost:3000/admin/obtenerImagenCard', {
+        params: { archivosBuscados }
+      });
+  
+      const imagenes = imagenesResponse.data;
+  
+      // Asignar la primera imagen de cada patrimonio
+      const patrimoniosConImagen = data.map((patrimonio) => {
+        const nombreArchivo = patrimonio.nombre_archivo?.split('.')[0];
+        const primeraImagen = imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; // Obtener la primera imagen
+        return { ...patrimonio, primeraImagen };
+      });
+  
       setPatrimonios(patrimoniosConImagen);
-      // console.log(patrimoniosConImagen);
     } catch (error) {
       console.error("Error fetching the image URLs", error);
     }
   };
+  
 
   useEffect(() => {
     fetchImages();
@@ -61,7 +64,7 @@ const MediaCards = () => {
                 height="140"
                 image={patrimonio.primeraImagen ? `data:image/jpeg;base64,${patrimonio.primeraImagen}` : ''}
               />
-             
+             {console.log(patrimonio, "pingu")}
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {patrimonio.nombre_patrimonio}

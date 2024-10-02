@@ -41,7 +41,7 @@ function PatrimonioDetail() {
       const imagenesExistentes = await axios.get(
         `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${data.nombre_archivo?.split('.')[0]}`
       );
-console.log(imagenesExistentes?.data[0]?.imagen,"xs<");
+console.log(imagenesExistentes?.data[0],"xs<");
 
       // const imagenesArray = imagenesExistentes.data.map((imagen) => ({
       //   original: `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${imagen}`,
