@@ -7,6 +7,8 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { ParallaxProvider, ParallaxBanner } from "react-scroll-parallax";
 import NavBar from "../../common/NavBar";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import LoaderMuni from "../LoaderMuni/LoaderMuni";
+import Muni from "../../assets/logo-SMT-Blanco.png"
 
 const containerStyle = {
   width: "100%",
@@ -39,7 +41,7 @@ function PatrimonioDetail() {
 
       // Llamar al backend para obtener imágenes existentes
       const imagenesExistentes = await axios.get(
-        `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${data.nombre_archivo?.split('.')[0]}`
+        `http://localhost:3050/admin/obtenerImagenesPatri?nombreArchivo=${data.nombre_archivo?.split('.')[0]}`
       );
 console.log(imagenesExistentes?.data[0],"xs<");
 
@@ -75,6 +77,9 @@ console.log(imagenesExistentes?.data[0],"xs<");
   return (
     <ParallaxProvider>
       <NavBar customStyles={{ boxShadow: "none" }} />
+     { imagenes.length > 0 ? (
+
+    <>
       <ParallaxBanner
         className="parallax"
         layers={[
@@ -139,6 +144,7 @@ console.log(imagenesExistentes?.data[0],"xs<");
             <rect className="svg" width="100%" height="50" fill="RoyalBlue" />
           </svg>
         </div>
+   
 
         {isLoaded && (
           <div id="map" className="map-container">
@@ -154,7 +160,7 @@ console.log(imagenesExistentes?.data[0],"xs<");
             </GoogleMap>
           </div>
         )}
-      </div>
+      </div>     </>):(<LoaderMuni img ={Muni} />)}
     </ParallaxProvider>
   );
 }
