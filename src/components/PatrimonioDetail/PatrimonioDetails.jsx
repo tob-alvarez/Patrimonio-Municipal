@@ -8,7 +8,7 @@ import { ParallaxProvider, ParallaxBanner } from "react-scroll-parallax";
 import NavBar from "../../common/NavBar";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import LoaderMuni from "../LoaderMuni/LoaderMuni";
-import Muni from "../../assets/logo-SMT-Blanco.png";
+import Muni from "../../assets/logoMuni-sm.png";
 
 const containerStyle = {
   width: "100%",

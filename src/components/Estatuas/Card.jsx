@@ -7,15 +7,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import "./Cards.css";
 import LoaderMuni from "../LoaderMuni/LoaderMuni";
-import Muni from "../../assets/logoMuni-sm.png"
-
+import Muni from "../../assets/logoMuni-sm.png";
 
 const MediaCards = () => {
   const [patrimonios, setPatrimonios] = useState([]);
   const navigate = useNavigate();
 
-  const back = import.meta.env.VITE_APP_RUTA_BACK
-  
+  const back = import.meta.env.VITE_APP_RUTA_BACK;
+
   const fetchImages = async () => {
     const url = `${back}/patrimonio/listarPatrimonios/`;
     try {
@@ -26,23 +25,19 @@ const MediaCards = () => {
         (patrimonio) => patrimonio.nombre_archivo?.split(".")[0]
       );
 
-      // Hacer una única solicitud con todos los nombres de archivos
       const imagenesResponse = await axios.get(
-      `${back}/admin/obtenerImagenCard`,
+        `${back}/admin/obtenerImagenCard`,
         {
           params: { archivosBuscados },
         }
       );
 
       const imagenes = imagenesResponse.data.imagenesEncontradas;
-      {
-        console.log(imagenes);
-      }
-      // Asignar la primera imagen de cada patrimonio
+
       const patrimoniosConImagen = data.map((patrimonio) => {
         const nombreArchivo = patrimonio.nombre_archivo?.split(".")[0];
         const primeraImagen =
-          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; // Obtener la primera imagen
+          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; 
         return { ...patrimonio, primeraImagen };
       });
 
@@ -74,9 +69,9 @@ const MediaCards = () => {
                 component="img"
                 alt={patrimonio.nombre_patrimonio}
                 height="140"
-                image={`${back}/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
+                image={`data:image;base64,${patrimonio.primeraImagen}`}
               />
-           
+
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {patrimonio.nombre_patrimonio}
@@ -86,7 +81,7 @@ const MediaCards = () => {
           </div>
         ))
       ) : (
-       <LoaderMuni img = {Muni}/>
+        <LoaderMuni img={Muni} />
       )}
     </>
   );
