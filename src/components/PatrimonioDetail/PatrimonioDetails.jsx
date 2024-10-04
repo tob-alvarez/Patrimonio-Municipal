@@ -35,11 +35,11 @@ function PatrimonioDetail() {
   console.log("hola")
   console.log(data.nombre_archivo)
       // Llamar al backend para obtener imágenes existentes
-      const imagenesExistentes = await axios.get(`http://localhost:3000/admin/obtenerImagenes?nombreArchivo=${data.nombre_archivo}`);
+      const imagenesExistentes = await axios.get(`/admin/obtenerImagenes?nombreArchivo=${data.nombre_archivo}`);
       
       const imagenesArray = imagenesExistentes.data.map(imagen => ({
-        original: `http://localhost:3000/admin/obtenerImagenes?image=${imagen}`,
-        thumbnail: `http://localhost:3000/admin/obtenerImagenes?image=${imagen}`,
+        original: axios.get(`/admin/obtenerImagenes?image=${imagen}`),
+        thumbnail: axios.get(`/admin/obtenerImagenes?image=${imagen}`),
       }));
   
       setImagenes(imagenesArray);
@@ -73,7 +73,7 @@ function PatrimonioDetail() {
         className="parallax"
         layers={[
           {
-            image: `http://localhost:3000/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`,
+            image: `${back}/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`,
             amount: 0.3,
           },
         ]}

@@ -7,12 +7,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import "./Cards.css";
 
+
 const MediaCards = () => {
   const [patrimonios, setPatrimonios] = useState([]);
   const navigate = useNavigate();
 
+  const back = import.meta.env.VITE_APP_RUTA_BACK
+  
   const fetchImages = async () => {
-    const url = `http://localhost:3000/patrimonio/listarPatrimonios/`;
+    const url = `${back}/patrimonio/listarPatrimonios/`;
     try {
       // const responseImagenes = await axios.get('http://localhost:3000/admin/obtenerImagenes');
       // const images = await responseImagenes.json();
@@ -48,7 +51,7 @@ const MediaCards = () => {
                 component="img"
                 alt={patrimonio.nombre_patrimonio}
                 height="140"
-                image={`http://localhost:3000/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
+                image={`${back}/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
               />
               {console.log(patrimonio.nombre_archivo)}
               <CardContent>

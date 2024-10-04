@@ -14,7 +14,7 @@ function ActionAreaCard({ patrimonio }) {
             <CardActionArea onClick={()=> handleCardClick(patrimonio.id_patrimonio)}>
                 <img
                     className='img-fluid'
-                    src={`http://localhost:3000/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
+                    src={`http://localhost:3050/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
                     style={{ minWidth: "350px", maxWidth: "350px", minHeight: "200px", maxHeight: "200px", objectFit: "cover" }}
                     alt={patrimonio.nombre_patrimonio}
                 />
