@@ -12,7 +12,7 @@ import Muni from "../../assets/logoMuni-sm.png"
 const MediaCards = () => {
   const [patrimonios, setPatrimonios] = useState([]);
   const navigate = useNavigate();
-
+ 
   const fetchImages = async () => {
     const url = `http://localhost:3050/patrimonio/listarPatrimonios/`;
     try {
