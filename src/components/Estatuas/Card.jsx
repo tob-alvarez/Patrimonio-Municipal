@@ -6,6 +6,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import "./Cards.css";
+import LoaderMuni from "../LoaderMuni/LoaderMuni";
+import Muni from "../../assets/logoMuni-sm.png"
 
 
 const MediaCards = () => {
@@ -17,13 +19,34 @@ const MediaCards = () => {
   const fetchImages = async () => {
     const url = `${back}/patrimonio/listarPatrimonios/`;
     try {
-      // const responseImagenes = await axios.get('http://localhost:3000/admin/obtenerImagenes');
-      // const images = await responseImagenes.json();
-      // console.log(responseImagenes);
       const response = await axios.get(url);
       const data = response.data.patrimonios;
-      setPatrimonios(data);
-      console.log(data);
+
+      const archivosBuscados = data.map(
+        (patrimonio) => patrimonio.nombre_archivo?.split(".")[0]
+      );
+
+      // Hacer una única solicitud con todos los nombres de archivos
+      const imagenesResponse = await axios.get(
+      `${back}/admin/obtenerImagenCard`,
+        {
+          params: { archivosBuscados },
+        }
+      );
+
+      const imagenes = imagenesResponse.data.imagenesEncontradas;
+      {
+        console.log(imagenes);
+      }
+      // Asignar la primera imagen de cada patrimonio
+      const patrimoniosConImagen = data.map((patrimonio) => {
+        const nombreArchivo = patrimonio.nombre_archivo?.split(".")[0];
+        const primeraImagen =
+          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; // Obtener la primera imagen
+        return { ...patrimonio, primeraImagen };
+      });
+
+      setPatrimonios(patrimoniosConImagen);
     } catch (error) {
       console.error("Error fetching the image URLs", error);
     }
@@ -53,7 +76,7 @@ const MediaCards = () => {
                 height="140"
                 image={`${back}/admin/obtenerImagenes?image=${patrimonio.nombre_archivo}`}
               />
-              {console.log(patrimonio.nombre_archivo)}
+           
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {patrimonio.nombre_patrimonio}
@@ -63,7 +86,7 @@ const MediaCards = () => {
           </div>
         ))
       ) : (
-        <p>Loading...</p>
+       <LoaderMuni img = {Muni}/>
       )}
     </>
   );
