@@ -4,6 +4,7 @@ import ActionAreaCard from "../ActionAreaCard/ActionAreaCard";
 import NavBar from "../../common/NavBar";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png"
 import "./TipoEstatua.css"
+import MediaCards from "../Estatuas/Card";
 
 function Estatuas() {
   const [patrimonios, setPatrimonios] = useState([]);
@@ -36,9 +37,9 @@ function Estatuas() {
    
     <div className="stylexd"
     >
-      {filteredPatrimonios.map((patrimonio, index) => (
-        <ActionAreaCard key={index} patrimonio={patrimonio} />
-      ))}
+      {/* {filteredPatrimonios.map((patrimonio, index) => ( */}
+        <MediaCards patri={filteredPatrimonios} />
+      {/* ))} */}
     </div>
     </>
   );

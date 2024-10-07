@@ -4,6 +4,7 @@ import ActionAreaCard from "../ActionAreaCard/ActionAreaCard";
 import NavBar from "../../common/NavBar";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png"
 import "./TipoEstatua.css"
+import MediaCards from "../Estatuas/Card";
 
 function Bajorelieves() {
   const [patrimonios, setPatrimonios] = useState([]);
@@ -34,9 +35,7 @@ function Bajorelieves() {
     <NavBar customStyles={customStyles} logoSrc={logoMuniHome}/>
     <div className="stylexd"
     >
-      {filteredPatrimonios.map((patrimonio, index) => (
-        <ActionAreaCard key={index} patrimonio={patrimonio} />
-      ))}
+       <MediaCards patri={filteredPatrimonios} />
     </div>
     </>
   );

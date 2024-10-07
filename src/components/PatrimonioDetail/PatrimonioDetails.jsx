@@ -47,7 +47,7 @@ function PatrimonioDetail() {
           data.nombre_archivo?.split(".")[0]
         }`
       );
-      console.log(imagenesExistentes?.data[0], "xs<");
+      // console.log(imagenesExistentes?.data[0], "xs<");
 
       // const imagenesArray = imagenesExistentes.data.map((imagen) => ({
       //   original: `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${imagen}`,

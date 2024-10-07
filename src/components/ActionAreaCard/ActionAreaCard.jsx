@@ -7,6 +7,7 @@ import axios from "../../config/axios";
 function ActionAreaCard({ patrimonio }) {
   const [patrimonioConImg, setPatrimonioConImg] = useState(null); // Inicializa como null
   const navigate = useNavigate();
+  
   const back = import.meta.env.VITE_APP_RUTA_BACK;
 
   // Función para manejar la navegación cuando se hace clic en una tarjeta
@@ -18,6 +19,7 @@ function ActionAreaCard({ patrimonio }) {
   const fetchImages = async () => {
     try {
       const archivosBuscados = patrimonio.nombre_patrimonio;
+      console.log(archivosBuscados,"archivos buscados")
       const imagenesResponse = await axios.get(
         `${back}/admin/obtenerImagenCard`,
         {
@@ -29,8 +31,9 @@ function ActionAreaCard({ patrimonio }) {
 
       // Encuentra la primera imagen correspondiente al patrimonio
       const nombreArchivo = patrimonio.nombre_patrimonio?.split(".")[0];
-      const primeraImagen = imagenes?.[nombreArchivo]?.[`${nombreArchivo}_card`];
-
+      const primeraImagen =
+        imagenes?.[nombreArchivo]?.[`${nombreArchivo}_card`];
+      console.log(imagenesResponse, "primeraImagen");
       setPatrimonioConImg(primeraImagen); // Actualiza solo la imagen correspondiente
     } catch (error) {
       console.error("Error fetching the image URLs", error);
