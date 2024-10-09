@@ -7,80 +7,51 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import "./Cards.css";
 import LoaderMuni from "../LoaderMuni/LoaderMuni";
-import Muni from "../../assets/logoMuni-sm.png";
+import Muni from "../../assets/logoMuni-sm.png"
 
-const MediaCards = ({ patri }) => {
+const MediaCards = () => {
   const [patrimonios, setPatrimonios] = useState([]);
-  const [loading, setLoading] = useState([]);
   const navigate = useNavigate();
-
-  const back = import.meta.env.VITE_APP_RUTA_BACK;
-  // console.log(patri, "patri");
+ 
   const fetchImages = async () => {
-    setLoading(true);
-
-    let data;
-    let archivosBuscados;
-
+    const url = `http://localhost:3050/patrimonio/listarPatrimonios/`;
     try {
-      if (patri === undefined) {
-        const url = `${back}/patrimonio/listarPatrimonios/`;
-        const response = await axios.get(url);
-        data = response.data.patrimonios;
+      const response = await axios.get(url);
+      const data = response.data.patrimonios;
 
-        archivosBuscados = data.map(
-          (patrimonio) => patrimonio.nombre_archivo?.split(".")[0]
-        );
+      const archivosBuscados = data.map(
+        (patrimonio) => patrimonio.nombre_archivo?.split(".")[0]
+      );
 
-        const imagenesResponse = await axios.get(
-          `${back}/admin/obtenerImagenCard`,
-          { params: { archivosBuscados } }
-        );
-
-        const imagenes = imagenesResponse.data.imagenesEncontradas;
-
-        const patrimoniosConImagen = data.map((patrimonio) => {
-          const nombreArchivo = patrimonio.nombre_archivo?.split(".")[0];
-          const primeraImagen =
-            imagenes[nombreArchivo]?.[`${nombreArchivo}_card`];
-          return { ...patrimonio, primeraImagen };
-        });
-        setPatrimonios(patrimoniosConImagen);
-      } else {
-        if (patri.length > 0) {
-          archivosBuscados = patri.map(
-            (item) => item.nombre_patrimonio?.split(".")[0]
-          );
-
-          const imagenesResponse = await axios.get(
-            `${back}/admin/obtenerImagenCard`,
-            { params: { archivosBuscados } }
-          );
-
-          const imagenes = imagenesResponse.data.imagenesEncontradas;
-
-          const patrimoniosConImagen = patri.map((item) => {
-            const nombrePatrimonio = item.nombre_patrimonio?.split(".")[0];
-            const primeraImagen =
-              imagenes[nombrePatrimonio]?.[`${nombrePatrimonio}_card`];
-            return { ...item, primeraImagen };
-          });
-
-          setPatrimonios(patrimoniosConImagen);
-        } else {
-          console.error("patri está vacío");
+      // Hacer una única solicitud con todos los nombres de archivos
+      const imagenesResponse = await axios.get(
+        "http://localhost:3050/admin/obtenerImagenCard",
+        {
+          params: { archivosBuscados },
         }
+      );
+
+      const imagenes = imagenesResponse.data.imagenesEncontradas;
+      {
+        console.log(imagenes);
       }
+      // Asignar la primera imagen de cada patrimonio
+      const patrimoniosConImagen = data.map((patrimonio) => {
+        const nombreArchivo = patrimonio.nombre_archivo?.split(".")[0];
+        const primeraImagen =
+          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; // Obtener la primera imagen
+        return { ...patrimonio, primeraImagen };
+      });
+
+      setPatrimonios(patrimoniosConImagen);
     } catch (error) {
       console.error("Error fetching the image URLs", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchImages();
-  }, [patri]);
+  }, []);
 
   const handleCardClick = (patrimonioId) => {
     navigate(`/patrimonio/${patrimonioId}`);
@@ -88,9 +59,7 @@ const MediaCards = ({ patri }) => {
 
   return (
     <>
-      {loading ? (
-        <LoaderMuni img={Muni} />
-      ) : patrimonios.length > 0 ? (
+      {patrimonios.length > 0 ? (
         patrimonios.map((patrimonio, index) => (
           <div
             className="cards-container"
@@ -102,8 +71,13 @@ const MediaCards = ({ patri }) => {
                 component="img"
                 alt={patrimonio.nombre_patrimonio}
                 height="140"
-                image={`data:image;base64,${patrimonio.primeraImagen}`}
+                image={
+                  patrimonio.primeraImagen
+                    ? `data:image/jpeg;base64,${patrimonio.primeraImagen}`
+                    : ""
+                }
               />
+           
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {patrimonio.nombre_patrimonio}
@@ -113,7 +87,7 @@ const MediaCards = ({ patri }) => {
           </div>
         ))
       ) : (
-        <p>No se encontraron patrimonios.</p>
+       <LoaderMuni img = {Muni}/>
       )}
     </>
   );
