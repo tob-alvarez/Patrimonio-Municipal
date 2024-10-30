@@ -6,14 +6,51 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { ParallaxProvider, ParallaxBanner } from "react-scroll-parallax";
 import NavBar from "../../common/NavBar";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import LoaderMuni from "../LoaderMuni/LoaderMuni";
+import logoMuniLight from "../../assets/Logo_SMT_neg_1.png";
+import logoMuniDark from "../../assets/Logo_SMT_pos_1.png";
 import Muni from "../../assets/logoMuni-sm.png";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "./Leaflet.css"
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+// Configuración del icono de marcador
+const icon = new L.Icon({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+function CenterMapButton({ lat, lng }) {
+  const map = useMap();
+
+  // Añadir el botón de control personalizado
+  useEffect(() => {
+    const centerMap = () => {
+      map.setView([lat, lng], 20);
+    };
+    const centerButton = L.control({ position: "bottomright" });
+    centerButton.onAdd = () => {
+      const button = L.DomUtil.create("button", "center-map-button");
+      button.innerHTML = "📍"; // Puedes cambiar este emoji por un ícono similar al de Google Maps
+      button.onclick = centerMap;
+      button.title = "Centrar";
+      return button;
+    };
+    centerButton.addTo(map);
+
+    return () => {
+      map.removeControl(centerButton);
+    };
+  }, [map, lat, lng]);
+
+  return null;
+}
 
 function PatrimonioDetail() {
   const { id } = useParams();
@@ -21,11 +58,11 @@ function PatrimonioDetail() {
   const [error, setError] = useState(null);
   const [imagenes, setImagenes] = useState([]);
 
-  const back = import.meta.env.VITE_APP_RUTA_BACK;
+  // Estado para manejar el color de fondo y logo dinámicos
+  const [bgColor, setBgColor] = useState("transparent");
+  const [currentLogoSrc, setCurrentLogoSrc] = useState(logoMuniLight);
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAAZH-C5wlX8bcDecWgRAxpyaVLGWeGNOQ",
-  });
+  const back = import.meta.env.VITE_APP_RUTA_BACK;
 
   const traerPatrimonio = async (id) => {
     try {
@@ -33,27 +70,14 @@ function PatrimonioDetail() {
         `${back}/patrimonio/listarPatrimoniosPorId/${id}`
       );
       const data = response.data.patrimonio[0];
-
       if (!data) {
         throw new Error("No se encontró el patrimonio");
       }
       setPatrimonio(data);
-      console.log("hola");
-      console.log(data.nombre_archivo);
 
-      // Llamar al backend para obtener imágenes existentes
       const imagenesExistentes = await axios.get(
-        `${back}/admin/obtenerImagenesPatri?nombreArchivo=${
-          data.nombre_archivo?.split(".")[0]
-        }`
+        `${back}/admin/obtenerImagenesPatri?nombreArchivo=${data.nombre_archivo?.split(".")[0]}`
       );
-      // console.log(imagenesExistentes?.data[0], "xs<");
-
-      // const imagenesArray = imagenesExistentes.data.map((imagen) => ({
-      //   original: `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${imagen}`,
-      //   thumbnail: `http://localhost:3000/admin/obtenerImagenesPatri?nombreArchivo=${imagen}`,
-      // }));
-
       setImagenes(imagenesExistentes.data);
     } catch (error) {
       console.error("No se encontró el patrimonio", error);
@@ -65,6 +89,24 @@ function PatrimonioDetail() {
     traerPatrimonio(id);
   }, [id]);
 
+  // Función de scroll para cambiar color de fondo y logo
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setBgColor("white");
+      setCurrentLogoSrc(logoMuniDark);
+    } else {
+      setBgColor("transparent");
+      setCurrentLogoSrc(logoMuniLight);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -73,46 +115,44 @@ function PatrimonioDetail() {
     return <div>Cargando...</div>;
   }
 
-  // Separar las coordenadas
   const [latitud, longitud] = patrimonio.latylon
     .split(",")
     .map((coord) => parseFloat(coord.trim()));
 
+  const interactionOptions = {
+    ZoomControl: true,
+    doubleClickZoom: true,
+    closePopupOnClick: true,
+    dragging: true,
+    zoomSnap: true,
+    zoomDelta: true,
+    trackResize: true,
+    touchZoom: true,
+    scrollWheelZoom: true,   
+  }
+
   return (
     <ParallaxProvider>
-      <NavBar customStyles={{ boxShadow: "none" }} />
+      <NavBar 
+        customStyles={{ boxShadow: "none", backgroundColor: bgColor }} 
+        logoSrc={currentLogoSrc} 
+      />
       {imagenes.length > 0 ? (
         <>
           <ParallaxBanner
             className="parallax"
             layers={[
               {
-                image: `data:image/jpeg;base64,${
-                  imagenes.length > 0 ? imagenes[0].imagen : ""
-                }`,
+                image: `data:image/jpeg;base64,${imagenes.length > 0 ? imagenes[0].imagen : ""}`,
                 amount: 0.3,
               },
             ]}
-            style={{
-              height: "1000px",
-            }}
+            style={{ height: "1000px" }}
           >
             <div className="patrimonio-background"></div>
           </ParallaxBanner>
           <div className="patrimonio-container">
-            <h1 className="patrimonio-title">
-              {patrimonio.nombre_patrimonio}
-              <div className="patrimonio-svg">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-                  <rect
-                    className="svg"
-                    width="100%"
-                    height="50"
-                    fill="RoyalBlue"
-                  />
-                </svg>
-              </div>
-            </h1>
+            <h1 className="patrimonio-title">{patrimonio.nombre_patrimonio}</h1>
             <div className="patrimonio-content">
               <div className="image-gallery">
                 <ImageGallery
@@ -129,54 +169,34 @@ function PatrimonioDetail() {
                 />
               </div>
               <div className="patrimonio-info">
-                <p className="patrimonio-autor">
-                  🔵 Autor: {patrimonio.nombre_autor}
-                </p>
-                <p className="patrimonio-año">
-                  🔵 Año de emplazamiento:{" "}
-                  {typeof patrimonio.anio_emplazamiento === "string"
-                    ? patrimonio.anio_emplazamiento.slice(0, 10)
-                    : ""}
-                </p>
-                <p className="patrimonio-ubicacion">
-                  🔵 Ubicación: {patrimonio.nombre_ubicacion}
-                </p>
-                <p className="patrimonio-origen">
-                  🔵 Origen del Patrimonio: {patrimonio.origen}
-                </p>
-                <p className="patrimonio-descripcion">
-                  {patrimonio.descripcion}
-                </p>
+                <p className="patrimonio-autor">🔵 Autor: {patrimonio.nombre_autor}</p>
+                <p className="patrimonio-año">🔵 Año de emplazamiento: {patrimonio.anio_emplazamiento.slice(0, 10)}</p>
+                <p className="patrimonio-ubicacion">🔵 Ubicación: {patrimonio.nombre_ubicacion}</p>
+                <p className="patrimonio-origen">🔵 Origen del Patrimonio: {patrimonio.origen}</p>
+                <p className="patrimonio-descripcion">{patrimonio.descripcion}</p>
               </div>
             </div>
 
             <h3 className="mt-5">Geolocalización</h3>
-            <div className="patrimonio-svg-h3">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <rect
-                  className="svg"
-                  width="100%"
-                  height="50"
-                  fill="RoyalBlue"
-                />
-              </svg>
-            </div>
 
-            {isLoaded && (
-              <div id="map" className="map-container">
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={{ lat: latitud, lng: longitud }}
-                  zoom={20}
-                >
-                  <Marker
-                    position={{ lat: latitud, lng: longitud }}
-                    title="Ubicación del Patrimonio"
-                  />
-                </GoogleMap>
-              </div>
-            )}
-          </div>{" "}
+            <div id="map" className="map-container">
+              <MapContainer
+                center={[latitud, longitud]}
+                zoom={20}
+                style={{ width: "100%", height: "400px" }}
+                {...interactionOptions}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker position={[latitud, longitud]} icon={icon} {...interactionOptions}>
+                  <Popup>{patrimonio.nombre_patrimonio}</Popup>
+                </Marker>
+                <CenterMapButton className="center-map-button" lat={latitud} lng={longitud} />
+              </MapContainer>
+            </div>
+          </div>
         </>
       ) : (
         <LoaderMuni img={Muni} />

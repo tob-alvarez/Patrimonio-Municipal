@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Box, Toolbar, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import logoMuniLight from "../assets/Logo_SMT_neg_1.png";
-import logoMuniDark from "../assets/Logo_SMT_pos_1.png";
 import SideBar from "./SideBar";
 import "./Navbar.css";
 
-const NavBar = ({ customStyles, logoSrc, color }) => {
+const NavBar = ({ customStyles, logoSrc, isInsideCard }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [bgColor, setBgColor] = useState('transparent');
-  const [currentLogoSrc, setCurrentLogoSrc] = useState(logoMuniLight);
+  const [bgColor, setBgColor] = useState(isInsideCard ? 'white' : 'transparent');
+  const [currentLogoSrc, setCurrentLogoSrc] = useState(logoSrc || logoMuniLight);
+
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -22,31 +22,15 @@ const NavBar = ({ customStyles, logoSrc, color }) => {
     setAnchorEl(null);
   };
 
-  const handleScroll = () => {
-    if (color) return;
-    if (window.scrollY > 0) {
-      setBgColor('white');
-      setCurrentLogoSrc(logoMuniDark);
-    } else {
-      setBgColor('transparent');
-      setCurrentLogoSrc(logoMuniLight);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   useEffect(() => {
     // Update logoSrc if passed from props
-    if (logoSrc) {
-      setCurrentLogoSrc(logoSrc);
-    }
+    if (logoSrc) setCurrentLogoSrc(logoSrc);
   }, [logoSrc]);
+
+  useEffect(() => {
+    // Update background color based on isInsideCard prop
+    setBgColor(isInsideCard ? 'white' : 'transparent');
+  }, [isInsideCard]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

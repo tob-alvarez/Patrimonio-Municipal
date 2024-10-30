@@ -30,6 +30,7 @@ const MediaCards = () => {
           params: { archivosBuscados },
         }
       );
+      
 
       const imagenes = imagenesResponse.data.imagenesEncontradas;
       {
@@ -79,7 +80,7 @@ const MediaCards = () => {
               />
            
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h6" component="div">
                   {patrimonio.nombre_patrimonio}
                 </Typography>
               </CardContent>

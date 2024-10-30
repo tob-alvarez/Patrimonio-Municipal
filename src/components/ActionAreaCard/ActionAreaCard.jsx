@@ -50,7 +50,7 @@ function ActionAreaCard({ patrimonio }) {
       <CardActionArea onClick={() => handleCardClick(patrimonio.id_patrimonio)}>
         <img
           className="img-fluid"
-          src={patrimonioConImg || "fallback_image_url"} // Imagen de fallback en caso de error o que no exista
+          src={patrimonioConImg || "fallback_image_url"}
           style={{
             minWidth: "350px",
             maxWidth: "350px",

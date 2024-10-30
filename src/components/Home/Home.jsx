@@ -2,7 +2,7 @@ import NavBar from '../../common/NavBar';
 import Card from '../Estatuas/Card';
 import Carrousel from "../Carousel/Carrousel";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png";
-import './Home.css'; // Asegúrate de que este archivo existe en la misma carpeta que Home.jsx
+import './Home.css';
 
 const Home = () => {
   const customStyles = {
