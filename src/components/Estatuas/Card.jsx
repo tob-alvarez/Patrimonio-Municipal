@@ -14,7 +14,7 @@ const MediaCards = () => {
   const navigate = useNavigate();
  
   const fetchImages = async () => {
-    const url = `http://localhost:3050/patrimonio/listarPatrimonios/`;
+    const url = `/patrimonio/listarPatrimonios/`;
     try {
       const response = await axios.get(url);
       const data = response.data.patrimonios;
@@ -25,7 +25,7 @@ const MediaCards = () => {
 
       // Hacer una única solicitud con todos los nombres de archivos
       const imagenesResponse = await axios.get(
-        "http://localhost:3050/admin/obtenerImagenCard",
+        "/admin/obtenerImagenCard",
         {
           params: { archivosBuscados },
         }

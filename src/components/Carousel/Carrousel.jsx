@@ -26,8 +26,8 @@ function Carrousel() {
     <Carousel>
       {banners?.map((banner, index) => (
         <Carousel.Item key={index} style={{ overflow: "hidden" }} className="contenedorImagenCar">
-          {/* <img src={`/var/www/vhosts/cidituc.smt.gob.ar/Fotos-Patrimonio/Banner/${banner.nombre_banner}`} alt="" className="imagenCar" /> */}
-          <img src={banner1} alt="" className="imagenCar" />
+          <img src={`/var/www/vhosts/cidituc.smt.gob.ar/Fotos-Patrimonio/Banner/${banner.nombre_banner}`} alt="" className="imagenCar" />
+          {/* <img src={banner1} alt="" className="imagenCar" /> */}
           {console.log(banner.nombre_banner, "banner")}
           <Carousel.Caption className="text-image">
           </Carousel.Caption>
