@@ -1,5 +1,5 @@
 import NavBar from '../../common/NavBar';
-import Card from '../Estatuas/Card';
+import Card from '../MediaCard/MediaCardHome';
 import Carrousel from "../Carousel/Carrousel";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png";
 import './Home.css';

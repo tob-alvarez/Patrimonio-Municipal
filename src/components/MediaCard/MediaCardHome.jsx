@@ -5,11 +5,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import "./Cards.css";
+import "./MediaCardHome.css";
 import LoaderMuni from "../LoaderMuni/LoaderMuni";
 import Muni from "../../assets/logoMuni-sm.png"
 
-const MediaCards = () => {
+const MediaCardsHome = () => {
   const [patrimonios, setPatrimonios] = useState([]);
   const navigate = useNavigate();
  
@@ -40,7 +40,7 @@ const MediaCards = () => {
       const patrimoniosConImagen = data.map((patrimonio) => {
         const nombreArchivo = patrimonio.nombre_archivo?.split(".")[0];
         const primeraImagen =
-          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`]; // Obtener la primera imagen
+          imagenes[nombreArchivo]?.[`${nombreArchivo}_card`];
         return { ...patrimonio, primeraImagen };
       });
 
@@ -71,12 +71,17 @@ const MediaCards = () => {
               <CardMedia
                 component="img"
                 alt={patrimonio.nombre_patrimonio}
-                height="140"
+                height="150"
                 image={
                   patrimonio.primeraImagen
                     ? `data:image/jpeg;base64,${patrimonio.primeraImagen}`
                     : ""
                 }
+
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "50% 20%"
+                }}
               />
            
               <CardContent>
@@ -94,4 +99,4 @@ const MediaCards = () => {
   );
 };
 
-export default MediaCards;
+export default MediaCardsHome;

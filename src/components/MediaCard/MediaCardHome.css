@@ -6,13 +6,21 @@
     position: relative; 
     z-index: 1; 
 }
+
+.cardMedia {
+height: 150px !important;
+object-fit: cover;
+object-position: 80% !important;
+
+}
+
 .cards:hover{
     scale: 1.1;
 }
 
 .cards-container {
     transition: transform 0.3s ease;
-    object-fit: cover;
+    object-fit: contain;
     height: 300px;
     width: 300px;
     transition: .5s;

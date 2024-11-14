@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "../../config/axios";
-import ActionAreaCard from "../ActionAreaCard/ActionAreaCard";
 import NavBar from "../../common/NavBar";
 import logoMuniHome from "../../assets/Logo_SMT_pos_1.png"
 import "./TipoEstatua.css"
-import MediaCards from "../Estatuas/Card";
+import MediaCard from "../MediaCard/MediaCard";
 
 function Estatuas() {
   const [patrimonios, setPatrimonios] = useState([]);
@@ -12,7 +11,6 @@ function Estatuas() {
   const customStyles = {
     backgroundColor: 'white'  
   };
-
 
   const fetchData = async () => {
     try {
@@ -27,20 +25,22 @@ function Estatuas() {
     fetchData();
   }, []);
 
-  const filteredPatrimonios = patrimonios.filter(
-    (patrimonio) => patrimonio.id_tipologia === 2
-  );
+  // const filteredPatrimonios = patrimonios.filter(
+  //   (patrimonio) => patrimonio.id_tipologia === 2
+  // );
 
   return (
     <>
-    <NavBar customStyles={customStyles} logoSrc={logoMuniHome}/>
-   
-    <div className="stylexd"
-    >
-      {/* {filteredPatrimonios.map((patrimonio, index) => ( */}
-        <MediaCards patri={filteredPatrimonios} />
-      {/* ))} */}
-    </div>
+      <NavBar customStyles={customStyles} logoSrc={logoMuniHome} />
+      <div className="stylexd">
+        {patrimonios.length > 0 && (
+          <MediaCard
+            patri={patrimonios.filter(
+              (patrimonio) => patrimonio.id_tipologia == 2
+            )}
+          />
+        )}
+      </div>
     </>
   );
 }
